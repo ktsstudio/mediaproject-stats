@@ -11,18 +11,22 @@ import {
   StatEventType,
   StatusEventType,
 } from './types/send';
+import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
 
 /**
  * Отправка события во все доступные счетчики
  * @param {string} event - id события
  * @param {string} title - название действия по событию
  * @param {string} category - категория события
+ * @param {Object} rest - дополнительные параметры
  */
 export const statFunc = async ({
   event,
   title,
   category,
+  ...rest
 }: StatEventFuncType): Promise<void> => {
+  console.log('rest', rest);
   const {
     KTS_PROJECT_NAME,
     SEARCH,
@@ -44,21 +48,28 @@ export const statFunc = async ({
 
   if (GA_ID && category && title) {
     sendEventGA({
-      eventCategory: category,
       eventAction: title,
+      eventCategory: category,
+      ...rest,
     });
   }
 
-  if (YM_ID && event && category) {
+  if (YM_ID && event) {
     sendYaM({
-      event: event,
+      event,
       params: {
-        category: category,
+        category,
+        ...rest,
       },
     });
   }
+
   if (MAIL_ID && event) {
     sendMail({ event });
+  }
+
+  if (window.VK && event) {
+    sendVKRetargetingEvent(event);
   }
 };
 
@@ -66,16 +77,19 @@ export const statFunc = async ({
  * Отправка события во все доступные счетчики
  * @param {Object} action - event, title события
  * @param {string} category - категория события
+ * @param {Object} rest - дополнительные параметры
  */
 export const statEvent = async ({
   action,
   category,
+  ...rest
 }: StatEventType): Promise<void> => {
   const { event, title } = action;
   await statFunc({
     event,
     title,
     category,
+    ...rest,
   });
 };
 

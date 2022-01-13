@@ -1,14 +1,5 @@
 import { InitType } from './types/init';
 
-window.__params__ = {
-  GA_ID: '',
-  YM_ID: null,
-  MAIL_ID: '',
-  KTS_STATS_URL: '',
-  KTS_PROJECT_NAME: '',
-  SEARCH: '',
-};
-
 export let __params__: InitType = {
   GA_ID: '',
   YM_ID: null,

@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+
 import { __params__ } from './init';
 import {
   StatsEventGAType,

@@ -26,7 +26,7 @@ import { statPage } from './statsPages';
 import { sendPixel } from './sendPixel';
 import { sendVKStats } from './sendVKEvents';
 import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
-import { statEvent, statFunc, statSetStatus } from './stats';
+import { statEvent, statFunc, statSetStatus } from './statsEvent';
 
 export {
   init,

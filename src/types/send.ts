@@ -11,7 +11,7 @@ export type StatsPageType = {
 
 // заход на страницу во все доступные счетчики
 export type StatsSendPageType = {
-  event: string; // название событие
+  event?: string; // название событие
 } & StatsPageType;
 
 // google событие
@@ -40,12 +40,14 @@ export type ActionType = {
 export type StatEventType = {
   action: ActionType;
   category?: string;
+  [k: string]: any;
 };
 
 // отправка события во все доступные счетчики
 // метод ля отправки событий в счетчики statFunc
 export type StatEventFuncType = {
   category?: string;
+  [k: string]: any;
 } & ActionType;
 
 // отправка события установки статуса ВК
@@ -54,4 +56,12 @@ export type StatusEventType = {
   category?: string;
   statusName: string; // название статуса в ВК
   statusNumber: string | number; // id статуса в ВК
+};
+
+// внутрненняя статистиа ВК
+export type VKStatsType = {
+  event: string;
+  appId: number;
+  platform: string;
+  access_token: string;
 };

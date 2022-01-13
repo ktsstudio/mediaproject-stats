@@ -1,11 +1,32 @@
 import bridge from '@vkontakte/vk-bridge';
 
+import { __params__ } from './init';
+import { VKStatsType } from './types/send';
+
 let access_token_for_vkstats = '';
-// TODO получать access_token_for_vkstats, только если не получен в методе,
-//  так как если вызывать VKWebAppGetAuthToken со scope = '' можно потерять
-//  токены, которые были получены в приложении
-// статистика отправляется в ВК
-export const sendVKStats = async ({ eventName, appId, userId, platform }) => {
+
+/**
+ * Внутрення статистика ВК
+ * @param {string} event - id события
+ * @param {number} appId - id приложения
+ * @param {string} platform - платформа, на которой запущено приложение
+ * @param {string} access_token - токен доступа прав в ВК
+ */
+export const sendVKStats = async ({
+  event,
+  appId,
+  platform,
+  access_token,
+}: VKStatsType) => {
+  const { userId } = __params__;
+
+  // получать access_token_for_vkstats, только если не получен в методе,
+  //  так как если вызывать VKWebAppGetAuthToken со scope = '' можно потерять
+  //  токены, которые были получены в приложении
+  if (access_token) {
+    access_token_for_vkstats = access_token;
+  }
+
   if (!access_token_for_vkstats) {
     // получить токен, если еще нет с пустым scope,
     // чтобы пользователь не увидел модалки с запросом прав
@@ -28,15 +49,15 @@ export const sendVKStats = async ({ eventName, appId, userId, platform }) => {
       events: [
         // @ts-ignore
         {
-          user_id: parseInt(userId, 10),
-          mini_app_id: parseInt(userId, 10),
+          user_id: userId,
+          mini_app_id: appId,
           type: 'type_click',
           type_click: {
             type: 'type_mini_app_custom_event_item',
           },
           url: location.href,
           vk_platform: platform,
-          event: eventName,
+          event,
           screen: 'main',
           json: '',
         },
