@@ -9,9 +9,10 @@ import {
 } from './types/send';
 
 /**
- * Отправка событий в ktsspecials - внутренний сервис kts
+ * Отправка событий в ktsspecials - внутренний сервис статистики KTS
  * метод /api/data/save
- * @param {string} event - событие латиницей
+ * @typedef {Object} StatsKTSType
+ * @property {string} event - id события латиницей
  */
 export const sendStatsDataSaveKTS = async ({
   event,
@@ -46,9 +47,10 @@ export const sendStatsDataSaveKTS = async ({
 };
 
 /**
- * Отправка событий в ktsspecials - внутренний сервис kts
+ * Отправка событий в ktsspecials - внутренний сервис статистики KTS
  * метод /api/event/register
- * @param {string} event - событие латиницей
+ * @typedef {Object} StatsKTSType
+ * @property {string} event - id события латиницей
  */
 export const sendStatsRegisterKTS = async ({
   event,
@@ -80,9 +82,10 @@ export const sendStatsRegisterKTS = async ({
 };
 
 /**
- * Отправка события перехода по страницам в Google Analytics
- * @param {string} title - название страницы
- * @param {string} path - путь страницы
+ * Отправка события перехода на страницу в Google Analytics
+ * @typedef {Object} StatsPageType
+ * @property {string=} title - название страницы
+ * @property {string=} path - путь страницы
  */
 export const sendEventPageGA = ({
   title = null,
@@ -102,13 +105,14 @@ export const sendEventPageGA = ({
 
 /**
  * Отправка события в Google Analytics
- * @param {string} event - событие в GA
- * @param {string} eventAction - действие по событию
- * @param {string} eventCategory - категория события
- * @param {string} eventLabel - ярлык события (опционально)
- * @param {string} eventValue
- * @param {string} hash
- * @param {string} vars
+ * @typedef {Object} StatsEventGAType
+ * @property {string} event - событие в GA
+ * @property {string} eventAction - действие по событию
+ * @property {string} eventCategory - категория события
+ * @property {string=} eventLabel - ярлык события (опционально)
+ * @property {string=} eventValue
+ * @property {string=} hash
+ * @property {string=} vars
  */
 export const sendEventGA = ({
   event = 'event',
@@ -135,10 +139,11 @@ export const sendEventGA = ({
 
 /**
  * Отправка события в Яндекс Метрике
- * @param {string} event - id цели из Яндекс Метрики
- * @param {Object} params - дополнительные параметры, например, category
+ * @typedef {Object} StatsEventType
+ * @property {string} event - id цели из Яндекс Метрики
+ * @property {Object=} params - дополнительные параметры, например, category
  */
-export const sendYaM = ({ event, params = {} }: StatsEventType): void => {
+export const sendEventYaM = ({ event, params = {} }: StatsEventType): void => {
   try {
     window.ym(__params__.YM_ID, 'reachGoal', event, params);
   } catch (e) {
@@ -148,8 +153,9 @@ export const sendYaM = ({ event, params = {} }: StatsEventType): void => {
 
 /**
  * Отправка события перехода на страницу в Яндекс Метрику
- * @param {string} title - название страницы
- * @param {string} path - путь страницы
+ * @typedef {Object} StatsPageType
+ * @property {string} title - название страницы
+ * @property {string} path - путь страницы
  */
 export const statPageYaM = ({ path, title }: StatsPageType): void => {
   try {
@@ -163,9 +169,10 @@ export const statPageYaM = ({ path, title }: StatsPageType): void => {
 
 /**
  * Отправка события в Top Mail
- * @param {string} event - id цели из Top.Mail
+ * @typedef {Object} StatsEventType
+ * @property {string} event - id цели из Top.Mail
  */
-export const sendMail = ({ event }: StatsEventType): void => {
+export const sendEventMail = ({ event }: StatsEventType): void => {
   try {
     window._tmr.push({
       id: __params__.MAIL_ID,
@@ -179,7 +186,8 @@ export const sendMail = ({ event }: StatsEventType): void => {
 
 /**
  * Отправка события перехода на страницу в Top Mail
- * @param {string} path - путь страницы
+ * @typedef {Object} StatsPageType
+ * @property {string} path - путь страницы
  */
 export const sendPageMail = ({ path }: StatsPageType): void => {
   try {

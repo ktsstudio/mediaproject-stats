@@ -11,7 +11,10 @@ import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
 
 /**
  * Отправка события захода на страницу во все доступные счетчики
- * @param {Object} page - event, path, title события
+ * @typedef {Object} StatsSendPageType
+ * @property {string} event - название события перехода на страницу
+ * @property {string} title - название страницы
+ * @property {string} path - путь страницы
  */
 export const statPage = async ({
   event,

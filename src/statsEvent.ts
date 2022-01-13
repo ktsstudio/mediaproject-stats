@@ -2,8 +2,8 @@ import {
   sendStatsRegisterKTS,
   sendStatsDataSaveKTS,
   sendEventGA,
-  sendYaM,
-  sendMail,
+  sendEventYaM,
+  sendEventMail,
 } from './send';
 import { __params__ } from './init';
 import {
@@ -15,10 +15,11 @@ import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
 
 /**
  * Отправка события во все доступные счетчики
- * @param {string} event - id события
- * @param {string} title - название действия по событию
- * @param {string} category - категория события
- * @param {Object} rest - дополнительные параметры
+ * @typedef {Object} StatEventFuncType
+ * @property {string=} event - id события
+ * @property {string=} title - название действия по событию
+ * @property {string=} category - категория события
+ * @property {Object=} rest - дополнительные параметры
  */
 export const statFunc = async ({
   event,
@@ -26,7 +27,6 @@ export const statFunc = async ({
   category,
   ...rest
 }: StatEventFuncType): Promise<void> => {
-  console.log('rest', rest);
   const {
     KTS_PROJECT_NAME,
     SEARCH,
@@ -55,7 +55,7 @@ export const statFunc = async ({
   }
 
   if (YM_ID && event) {
-    sendYaM({
+    sendEventYaM({
       event,
       params: {
         category,
@@ -65,7 +65,7 @@ export const statFunc = async ({
   }
 
   if (MAIL_ID && event) {
-    sendMail({ event });
+    sendEventMail({ event });
   }
 
   if (window.VK && event) {
@@ -75,9 +75,10 @@ export const statFunc = async ({
 
 /**
  * Отправка события во все доступные счетчики
- * @param {Object} action - event, title события
- * @param {string} category - категория события
- * @param {Object} rest - дополнительные параметры
+ * @typedef {Object} StatEventType
+ * @property {ActionType=} action - event, title события
+ * @property {string=} category - категория события
+ * @property {Object=} rest - дополнительные параметры
  */
 export const statEvent = async ({
   action,
@@ -95,10 +96,11 @@ export const statEvent = async ({
 
 /**
  * Отправка события установки статуса ВК
- * @param {Object} action - event, title события
- * @param {string} category - категория события
- * @param {string} statusName - название статуса
- * @param {string} statusNumber - id/номер статуса
+ * @typedef {Object} StatusEventType
+ * @property {ActionType=} action - event, title события
+ * @property {string=} category - категория события
+ * @property {string} statusName - название статуса
+ * @property {string | number} statusNumber - id/номер статуса
  */
 export const statSetStatus = async ({
   action,
