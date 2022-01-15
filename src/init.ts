@@ -1,14 +1,14 @@
-import { InitType } from './types/init';
+import { InitType, ParamsInitType } from './types/init';
 
-export let __params__: InitType = {
+export let __params__: ParamsInitType = {
   GA_ID: '',
   YM_ID: null,
   MAIL_ID: '',
+  userId: 0,
   KTS_STATS_URL: '',
   KTS_PROJECT_NAME: '',
-  SEARCH: '',
   KTS_TOKEN: '',
-  userId: 0,
+  SEARCH: '',
 };
 
 /**
@@ -27,20 +27,30 @@ export const init = ({
   GA_ID = '',
   YM_ID = null,
   MAIL_ID = '',
-  KTS_STATS_URL = '',
-  KTS_PROJECT_NAME = '',
-  SEARCH = '',
-  KTS_TOKEN = '',
+  KTS_DATA_SAVE = {
+    KTS_STATS_URL: '',
+    KTS_PROJECT_NAME: '',
+    KTS_TOKEN: '',
+  },
+  KTS_EVENT_REGISTER = {
+    KTS_STATS_URL: '',
+    KTS_PROJECT_NAME: '',
+    SEARCH: '',
+  },
   userId = 0,
 }: InitType): void => {
   __params__ = {
     GA_ID,
     YM_ID,
     MAIL_ID,
-    KTS_STATS_URL,
-    KTS_PROJECT_NAME,
-    SEARCH,
-    KTS_TOKEN,
+    KTS_STATS_URL:
+      KTS_DATA_SAVE?.KTS_STATS_URL || KTS_EVENT_REGISTER?.KTS_STATS_URL || '',
+    KTS_PROJECT_NAME:
+      KTS_DATA_SAVE?.KTS_PROJECT_NAME ||
+      KTS_EVENT_REGISTER?.KTS_PROJECT_NAME ||
+      '',
+    SEARCH: KTS_DATA_SAVE?.KTS_TOKEN || '',
+    KTS_TOKEN: KTS_EVENT_REGISTER?.SEARCH || '',
     userId,
   };
 };

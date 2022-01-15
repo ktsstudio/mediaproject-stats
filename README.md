@@ -7,34 +7,35 @@
 * Яндекс Метрика
 * Top.Mail
 * VK Retargeting
-* Внутренная статистика VK
+* Внутренняя статистика VK
 * Пиксели
 * KTS статистика
 
 ```sh
   yarn add @ktsstudio/mediaproject-stats
+  
+  npm i @ktsstudio/mediaproject-stats
 ```
 
 ## Переменные
 * [\_\_params\_\_](./src/init.ts) - переменная с id счетчиков, id пользователя и 
-  допонтительной информацией
+  дополнительной информацией
 
 ## Методы
-* [init](./src/init.ts) - метод заполнение переменной `__params__`
+* [init](./src/init.ts) - метод заполнения переменной `__params__`
 
 ### Методы для отправки событий
+* [statFunc](./src/statsEvent.ts) - метод внутри вызывает методы отправки
+    событий в Google Analytics, Яндекс метрику, Top.Mail, VK Retargeting, KTS статистику
 * [statEvent](./src/statsEvent.ts) - отправка события во все доступные 
   счетчики, оборачивает метод statFunc
-* [statFunc](./src/statsEvent.ts) - метод внутри вызывает методы отправки 
-  событий в Google Analytics, Яндекс метрику, Top.Mail, VK Retargeting, KTS статистику
-* [statSetStatus](./src/statsEvent.ts) - отправка события установки статуса 
-  ВК, оборачивает метод statFunc
-* [sendStatsDataSaveKTS](./src/send.ts) - отправка событий в ktsspecials - 
+* [statSetStatus](./src/statsEvent.ts) - отправка события установки статуса VK, формирует id события, добавляя к нему id статуса, и название события, добавляя к нему название статуса, оборачивает метод statFunc
+* [sendStatsDataSaveKTS](./src/sendKTS.ts) - отправка событий в ktsspecials - 
   внутренний сервис статистики KTS, метод /api/data/save
-* [sendStatsRegisterKTS](./src/send.ts) - отправка событий в ktsspecials -
+* [sendStatsRegisterKTS](./src/sendKTS.ts) - отправка событий в ktsspecials -
   внутренний сервис статистики KTS, метод /api/event/register
 * [sendEventGA](./src/send.ts) - отправка события в Google Analytics
-* [sendEventYaM](./src/send.ts) - отправка события в Яндекс Метрике
+* [sendEventYaM](./src/send.ts) - отправка события в Яндекс Метрику
 * [sendEventMail](./src/send.ts) - отправка события в Top Mail
 * [sendVKStats](./src/sendVKEvents.ts) - 
 * [sendPixel](./src/sendPixel.ts) - Установка пикселя на страницу
@@ -42,9 +43,9 @@
 
 
 ### Методы для отправки захода на страницу
-* [statPage](./src/statsPages.ts) - метод-обертк, внутри вызывает методы 
-  отправки перехода на стрницу в Google Analytics, Яндекс метрику, Top.Mail, 
-  и события перехода на стрницу в VK Retargeting, KTS статистику
+* [statPage](./src/statsPages.ts) - метод-обертка, внутри вызывает методы 
+  отправки перехода на страницу в Google Analytics, Яндекс метрику, Top.Mail, 
+  и события перехода на страницу в VK Retargeting, KTS статистику
 * [sendEventPageGA](./src/send.ts) - отправка события перехода на страницу в 
   Google Analytics
 * [statPageYaM](./src/send.ts) - отправка события перехода на страницу в Яндекс Метрику
@@ -52,13 +53,13 @@
 
 
 ## Как использовать
-1. Добавить в `index.html` коды используемых счетчиков.
+1. Добавить в `index.html` коды используемых счетчиков (Google Analytics, 
+   Яндекс Метрика, Top Mail, VK Retargeting). 
 2. Получить id пользователя, если есть (VK, OK).
 3. Сохранить строку авторизации, если есть (VK, OK).
 4. Вызвать метод init.
 5. Вызвать метод statPage для отправки события перехода на страницу. 
-   (обязательно для использовавания Яндекс Метрики в iframe, иначе события 
-   не отправятся в счетчик).
+   (на старте приложения обязательно вызывать этот метод для использования Яндекс  Метрики в iframe, иначе события не отправятся в счетчик).
 6. Вызвать метод statEvent для отправки события.
 
 ## Примеры

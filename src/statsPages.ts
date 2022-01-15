@@ -1,10 +1,5 @@
-import {
-  sendStatsDataSaveKTS,
-  sendStatsRegisterKTS,
-  sendEventPageGA,
-  statPageYaM,
-  sendPageMail,
-} from './send';
+import { sendEventPageGA, statPageYaM, sendPageMail } from './send';
+import { sendStatsDataSaveKTS, sendStatsRegisterKTS } from './sendKTS';
 import { __params__ } from './init';
 import { StatsSendPageType } from './types/send';
 import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';

@@ -52,11 +52,11 @@ export type StatsEventGAType = {
   /**
    * действие по событию
    */
-  eventAction?: string | null;
+  eventAction: string | null;
   /**
    * категория события
    */
-  eventCategory?: string | null;
+  eventCategory: string | null;
   /**
    * ярлык события
    */

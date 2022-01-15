@@ -17,11 +17,10 @@ import {
   sendEventPageGA,
   sendEventMail,
   sendPageMail,
-  sendStatsRegisterKTS,
-  sendStatsDataSaveKTS,
   sendEventYaM,
   statPageYaM,
 } from './send';
+import { sendStatsRegisterKTS, sendStatsDataSaveKTS } from './sendKTS';
 import { statPage } from './statsPages';
 import { sendPixel } from './sendPixel';
 import { sendVKStats } from './sendVKEvents';

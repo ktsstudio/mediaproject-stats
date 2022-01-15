@@ -1,10 +1,5 @@
-import {
-  sendStatsRegisterKTS,
-  sendStatsDataSaveKTS,
-  sendEventGA,
-  sendEventYaM,
-  sendEventMail,
-} from './send';
+import { sendEventGA, sendEventYaM, sendEventMail } from './send';
+import { sendStatsRegisterKTS, sendStatsDataSaveKTS } from './sendKTS';
 import { __params__ } from './init';
 import {
   StatEventFuncType,
@@ -19,7 +14,8 @@ import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
  * @property {string=} event - id события
  * @property {string=} title - название действия по событию
  * @property {string=} category - категория события
- * @property {Object=} rest - дополнительные параметры
+ * @property {Object=} rest - дополнительные параметры (отправляются в GA и
+ * Яндекс Метрику)
  */
 export const statFunc = async ({
   event,
@@ -38,11 +34,18 @@ export const statFunc = async ({
     userId,
   } = __params__;
 
-  if (KTS_PROJECT_NAME && SEARCH && KTS_STATS_URL && event) {
+  if (KTS_PROJECT_NAME && SEARCH && !KTS_TOKEN && KTS_STATS_URL && event) {
     await sendStatsRegisterKTS({ event });
   }
 
-  if (KTS_PROJECT_NAME && KTS_TOKEN && KTS_STATS_URL && userId && event) {
+  if (
+    KTS_PROJECT_NAME &&
+    KTS_TOKEN &&
+    !SEARCH &&
+    KTS_STATS_URL &&
+    userId &&
+    event
+  ) {
     await sendStatsDataSaveKTS({ event });
   }
 
@@ -95,7 +98,8 @@ export const statEvent = async ({
 };
 
 /**
- * Отправка события установки статуса ВК
+ * Отправка события установки статуса VK, формирует id события, добавляя к
+ * нему id статуса, и название события, добавляя к нему название статуса
  * @typedef {Object} StatusEventType
  * @property {ActionType=} action - event, title события
  * @property {string=} category - категория события
