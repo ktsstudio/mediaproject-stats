@@ -17,52 +17,49 @@ export type StatsPageType = {
   /**
    * название страницы
    */
-  title?: string | null;
+  title?: string;
   /**
    * путь страницы
    */
-  path?: string | null;
+  path?: string;
 };
 
 /**
  * Тип для отправки события захода на страницу во все доступные счетчики
  */
-export type StatsSendPageType = {
-  /**
-   * id события
-   */
-  event?: string;
-} & StatsPageType;
+export type StatsSendPageType = StatsPageType &
+  Partial<StatsKTSType> &
+  Partial<SnitchPageType>;
 
 /**
  * Тип для отправки события в Google Analytics
- * @param {string} event - функция отправки события в GA
- * @param {string} eventAction - действие по событию
- * @param {string} eventCategory - категория события
- * @param {string} eventLabel - ярлык события (опционально)
- * @param {string} eventValue - (опционально)
- * @param {string} hash - (опционально)
- * @param {string} vars - (опционально)
  */
 export type StatsEventGAType = {
   /**
-   * функция отправки события в GA
+   * команда отправки события в GA
    */
   event?: string;
   /**
    * действие по событию
    */
-  eventAction: string | null;
+  eventAction: string;
   /**
    * категория события
    */
-  eventCategory: string | null;
+  eventCategory: string;
   /**
    * ярлык события
    */
-  eventLabel?: string | null;
-  eventValue?: string | null;
-  hash?: string | null;
+  eventLabel?: string;
+  /**
+   * целое положительное значение
+   */
+  eventValue?: number;
+  /**
+   * extra параметры, подробнее в
+   * https://developers.google.com/tag-platform/gtagjs/reference/parameters?hl=ru
+   */
+  [K: string]: any;
 };
 
 /**
@@ -76,7 +73,7 @@ export type StatsEventType = {
   /**
    * дополнительные параметры
    */
-  params?: Record<string, any> | null;
+  params?: Record<string, any>;
 };
 
 /**
@@ -146,11 +143,7 @@ export type StatusEventType = {
 /**
  * Тип отправки события во внутреннюю статистику ВК
  */
-export type VKStatsType = {
-  /**
-   * id события
-   */
-  event: string;
+export type VKStatsInitType = {
   /**
    * id приложения
    */
@@ -163,4 +156,41 @@ export type VKStatsType = {
    * токен доступа прав в ВК с любым (и пустым) scope=
    */
   access_token?: string;
+  /**
+   * версия VK API
+   */
+  version?: string;
+};
+
+/**
+ * Тип отправки события во внутреннюю статистику ВК
+ */
+export type VKStatsType = {
+  /**
+   * id события
+   */
+  event: string;
+  /**
+   * название страницы, например main
+   */
+  screen: string;
+  /**
+   * дополнительная информация в формате JSON
+   */
+  json?: string;
+} & VKStatsInitType;
+
+/**
+ * Тип отправки страницы во внутреннюю статистику ВК через Snitch
+ * https://github.com/nonstandardmail/snitch/tree/master/packages/snitch-mini-apps
+ */
+export type SnitchPageType = {
+  /**
+   * название экрана
+   */
+  screenType: string;
+  /**
+   * дополнительная информация о странице
+   */
+  screenId?: string;
 };

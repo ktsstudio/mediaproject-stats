@@ -9,10 +9,7 @@ import { StatsEventGAType, StatsEventType, StatsPageType } from './types/send';
  * @property {string=} title - название страницы
  * @property {string=} path - путь страницы
  */
-export const sendEventPageGA = ({
-  title = null,
-  path = null,
-}: StatsPageType): void => {
+export const sendEventPageGA = ({ title, path }: StatsPageType): void => {
   try {
     window.gtag('event', 'page_view', {
       page_title: title,
@@ -28,31 +25,33 @@ export const sendEventPageGA = ({
 /**
  * Отправка события в Google Analytics
  * @typedef {Object} StatsEventGAType
- * @property {string=} event - событие в GA, по умолчанию равно 'event'
+ * @property {string=} event - команда события в GA, по умолчанию равно 'event'
  * @property {string} eventAction - действие по событию
  * @property {string} eventCategory - категория события
- * @property {string=} eventLabel - ярлык события (опционально)
- * @property {string=} eventValue
- * @property {string=} hash
- * @property {string=} vars
+ * @property {string=} eventLabel - ярлык события - дополнительная
+ * информация для событий (опционально)
+ * @property {number=} eventValue - ценность события, целое неотрицательное
+ * число, используется например для указания времени загрузки проигрывателя
+ * или для начисления денежной суммы при достижении определенного маркера воспроизведения в проигрывателе.
+ * @property {string=} extra - дополнительные параметры: event_callback,
+ * event_timeout, groups,
+ * подробнее https://developers.google.com/tag-platform/gtagjs/reference/parameters?hl=ru
  */
 export const sendEventGA = ({
   event = 'event',
   eventAction,
   eventCategory,
-  eventLabel = null,
-  eventValue = null,
-  hash = null,
-  ...vars
+  eventLabel,
+  eventValue,
+  ...extra
 }: StatsEventGAType): void => {
   try {
     window.gtag(event, eventAction, {
       event_category: eventCategory,
       event_label: eventLabel,
       value: eventValue,
-      from: hash,
       send_to: __params__.GA_ID,
-      ...vars,
+      ...extra,
     });
   } catch (e) {
     console.error('gtag page error', e);

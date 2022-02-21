@@ -7,9 +7,10 @@
 * Яндекс Метрика
 * Top.Mail
 * VK Retargeting
-* Внутренняя статистика VK
 * Пиксели
 * KTS статистика
+* Внутренняя статистика VK
+* Внутренняя статистика VK c использованием библиотеки [snitch](https://github.com/nonstandardmail/snitch/tree/master/packages/snitch-mini-apps)
 
 ```sh
   yarn add @ktsstudio/mediaproject-stats
@@ -23,6 +24,7 @@
 
 ## Методы
 * [init](./src/init.ts) - метод заполнения переменной `__params__`
+* [setUserId](./src/init.ts) - метод установки id пользователя
 
 ### Методы для отправки событий
 * [statFunc](./src/statsEvent.ts) - метод внутри вызывает методы отправки
@@ -37,9 +39,11 @@
 * [sendEventGA](./src/send.ts) - отправка события в Google Analytics
 * [sendEventYaM](./src/send.ts) - отправка события в Яндекс Метрику
 * [sendEventMail](./src/send.ts) - отправка события в Top Mail
-* [sendVKStats](./src/sendVKEvents.ts) - 
+* [sendVKStats](./src/sendVKEvents.ts) - отправка события во внутреннюю статистику VK
 * [sendPixel](./src/sendPixel.ts) - Установка пикселя на страницу
 * [sendVKRetargeting](./src/sendVKRetargetingEvent.ts) - отправка события во внутреннюю статистику VK
+* [sendSnitchEvent](./src/sendVKSnitch.ts) - отправка события во внутреннюю 
+  статистику VK через обертку [snitch](https://github.com/nonstandardmail/snitch/tree/master/packages/snitch-mini-apps)
 
 
 ### Методы для отправки захода на страницу
@@ -50,12 +54,16 @@
   Google Analytics
 * [statPageYaM](./src/send.ts) - отправка события перехода на страницу в Яндекс Метрику
 * [sendPageMail](./src/send.ts) - отправка события перехода на страницу в Top Mail
+* [sendSnitchPage](./src/sendVKSnitch.ts) - отправка перехода на 
+  страницу/экран во внутреннюю статистику VK через обертку [snitch](https://github.com/nonstandardmail/snitch/tree/master/packages/snitch-mini-apps)
 
+### React Hook для отправки захода на страницу
+[useChangePage](./src/useChangePage.ts)
 
 ## Как использовать
 1. Добавить в `index.html` коды используемых счетчиков (Google Analytics, 
-   Яндекс Метрика, Top Mail, VK Retargeting). 
-2. Получить id пользователя, если есть (VK, OK).
+   Яндекс Метрика, Top Mail, VK Retargeting, Snitch). 
+2. Получить id пользователя, если есть.
 3. Сохранить строку авторизации, если есть (VK, OK).
 4. Вызвать метод init.
 5. Вызвать метод statPage для отправки события перехода на страницу. 
@@ -72,8 +80,19 @@ init({
   KTS_STATS_URL: 'https://statistic.demo',
   SEARCH: window.search,
   KTS_PROJECT_NAME: 'demo',
+  hasSnitch: false,
+  VK_STAT_PARAM: {
+    appId: 0,
+    platform: 'web',
+    access_token: 'abcdefg',
+    version: '5.124',
+  },
   userId: window.user_id,
 });
+```
+
+### метод setUserId
+```sh
 ```
 
 ### метод statEvent
@@ -127,6 +146,49 @@ const pages = {
 statPage(pages.start);
 ```
 
+### метод sendStatsDataSaveKTS
+```sh
+sendStatsDataSaveKTS({ event: 'START'});
+```
+
+### метод sendStatsRegisterKTS
+```sh
+sendStatsRegisterKTS({ event: 'START'});
+```
+
+### метод sendEventGA
+```sh
+sendEventPageGA({ 
+  eventAction: 'Нажатие на кнопку "Продолжить"', 
+  eventCategory: 'Страница онбординга' 
+});
+```
+
+### метод sendEventPageGA
+```sh
+sendEventPageGA({ path: '/start', title: 'Стартовая страница' });
+```
+
+### метод sendEventYaM
+```sh
+sendEventYaM({ event: 'START' });
+```
+
+### метод statPageYaM
+```sh
+statPageYaM({ path: '/start', title: 'Стартовая страница' });
+```
+
+### метод sendEventMail
+```sh
+sendEventMail({ event: 'START' });
+```
+
+### метод sendPageMail
+```sh
+sendPageMail({ path: '/start' });
+```
+
 ### метод sendVKRetargetingEvent
 ```sh
 sendVKRetargetingEvent('START');
@@ -142,12 +204,41 @@ export const pixels = {
 sendPixel(pixels.start);
 ```
 
+### метод sendVKStats
+```sh
+sendVKStats({
+  event: 'start',
+  screen: 'loading',
+  appId: 0,
+  platform: 'web',
+  access_token: 'abcdef',
+  json: '',
+  version: '5.124'
+});
+```
+
+### метод sendSnitchEvent
+```sh
+sendSnitchEvent('vkProfileStatusSet', { name: 'Снежинка'});
+```
+
+### метод sendSnitchPage
+```sh
+sendSnitchPage('main', 'main-statuses');
+```
+
+### react hook useChangePage
+```sh
+// в комопненте Root
+useChangePage({ path: pathname, title: panelName });
+```
+
 ## Закрытая документация
 [Статистика](https://kts.myjetbrains.com/youtrack/articles/SPECIAL-A-152/%D0%A1%D1%82%D0%B0%D1%82%D0%B8%D1%81%D1%82%D0%B8%D0%BA%D0%B0)
 
 ## Обратная связь
 
-Любой фидбэк вы можете передать нам на почту [hello@ktsstudio.ru]
-(mailto:hello@ktsstudio.ru) в письме с темой "mediaproject-stats feedback"
+Любой фидбэк вы можете передать нам на почту [hello@ktsstudio.ru](mailto:hello@ktsstudio.ru) в 
+письме с темой "mediaproject-stats feedback"
 
 

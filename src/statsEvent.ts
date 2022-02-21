@@ -1,5 +1,7 @@
 import { sendEventGA, sendEventYaM, sendEventMail } from './send';
 import { sendStatsRegisterKTS, sendStatsDataSaveKTS } from './sendKTS';
+import { sendSnitchEvent } from './sendVKSnitch';
+import { sendVKStats } from './sendVKEvents';
 import { __params__ } from './init';
 import {
   StatEventFuncType,
@@ -32,6 +34,8 @@ export const statFunc = async ({
     YM_ID,
     KTS_TOKEN,
     userId,
+    hasSnitch,
+    VK_STAT_PARAM,
   } = __params__;
 
   if (KTS_PROJECT_NAME && SEARCH && !KTS_TOKEN && KTS_STATS_URL && event) {
@@ -73,6 +77,19 @@ export const statFunc = async ({
 
   if (window.VK && event) {
     sendVKRetargetingEvent(event);
+  }
+
+  if (hasSnitch && event) {
+    sendSnitchEvent(event, rest);
+  }
+
+  if (VK_STAT_PARAM && event && rest.screen) {
+    sendVKStats({
+      event,
+      screen: rest.screen,
+      json: rest?.json || '',
+      ...VK_STAT_PARAM,
+    });
   }
 };
 

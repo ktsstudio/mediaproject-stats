@@ -1,26 +1,36 @@
+import { VKStatsInitType } from './send';
+
 /**
  * Тип общих параметров KTS event
- * @param {string} KTS_STATS_URL - ссылка на ktsspecials - внутренний сервис kts
- * @param {string} KTS_PROJECT_NAME - название проекта в ktsspecials
  */
 export type CommonKTSType = {
+  /**
+   * ссылка на ktsspecials - внутренний сервис kts
+   */
   KTS_STATS_URL: string;
+  /**
+   * название проекта в ktsspecials
+   */
   KTS_PROJECT_NAME: string;
 };
 
 /**
  * Тип параметров для метода KTS /data/save
- * @param {string} KTS_TOKEN - токен ktsspecials
  */
 export type DataSaveKTSType = {
+  /**
+   * токен ktsspecials
+   */
   KTS_TOKEN: string;
 } & CommonKTSType;
 
 /**
  * Тип параметров для метода KTS /event/register
- * @param {string} SEARCH - подпись параметров запуска в vk/ok
  */
 export type EventRegisterKTSType = {
+  /**
+   * подпись параметров запуска в vk/ok
+   */
   SEARCH: string;
 } & CommonKTSType;
 
@@ -30,39 +40,49 @@ export type ParamsKTSType = {
 
 /**
  * Общий тип параметров инициализации
- * @param {string} GA_ID - id счетчика google analytics
- * @param {number} YM_ID - id счетчика яндекс метрика
- * @param {string} MAIL_ID - id счетчика Top.Mail
- * @param {string} userId - id пользователя vk/ok
  */
 export type CommonInitType = {
+  /**
+   * id счетчика google analytics
+   */
   GA_ID?: string;
-  YM_ID?: number | null;
+  /**
+   * id счетчика яндекс метрика
+   */
+  YM_ID?: number;
+  /**
+   * id счетчика Top.Mail
+   */
   MAIL_ID?: string;
+  /**
+   * id пользователя vk/ok
+   */
   userId?: number;
+  /**
+   * флаг использования библиотеки snitch
+   */
+  hasSnitch?: boolean;
+  /**
+   * список параметров для отправки статистики во внутреннюю стататистику ВК
+   */
+  VK_STAT_PARAM?: VKStatsInitType | null;
 };
 
 /**
  * Тип входных параметров метода инициализации
- * @param {DataSaveKTSType | {}} KTS_DATA_SAVE - список параметров для
- * метода KTS /data/save
- * @param {EventRegisterKTSType | {}} KTS_EVENT_REGISTER - список параметров
- * для метода KTS /event/register
  */
 export type InitType = {
+  /**
+   * список параметров для метода KTS /data/save
+   */
   KTS_DATA_SAVE?: DataSaveKTSType;
+  /**
+   * список параметров для метода KTS /event/register
+   */
   KTS_EVENT_REGISTER?: EventRegisterKTSType;
 } & CommonInitType;
 
 /**
  * Тип переменной __params__
- * @param {string} GA_ID - id счетчика google analytics
- * @param {number} YM_ID - id счетчика яндекс метрика
- * @param {string} MAIL_ID - id счетчика Top.Mail
- * @param {string} KTS_STATS_URL - ссылка на ktsspecials - внутренний сервис kts
- * @param {string} KTS_PROJECT_NAME - название проекта в ktsspecials
- * @param {string} SEARCH - подпись параметров запуска в vk/ok
- * @param {string} KTS_TOKEN - токен ktsspecials
- * @param {string} userId - id пользователя vk/ok
  */
 export type ParamsInitType = ParamsKTSType & CommonInitType;

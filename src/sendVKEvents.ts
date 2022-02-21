@@ -1,4 +1,4 @@
-import bridge from '@vkontakte/vk-bridge';
+import bridge, { ErrorData } from '@vkontakte/vk-bridge';
 
 import { __params__ } from './init';
 import { VKStatsType } from './types/send';
@@ -11,13 +11,19 @@ let access_token_for_vkstats = '';
  * @property {string} event - id события
  * @property {number} appId - id приложения
  * @property {string} platform - платформа, на которой запущено приложение
- * @property {string=} access_token - токен доступа прав в ВК с любым (и пустым) scope=
+ * @property {string=} access_token - токен доступа прав в ВК с любым (или
+ * пустым) scope=""
+ * @property {string=} json - дополнительная информация в формате JSON
+ * @property {string=} version - версия VK API
  */
 export const sendVKStats = async ({
   event,
+  screen,
   appId,
   platform,
   access_token = '',
+  json = '',
+  version = '5.124',
 }: VKStatsType): Promise<void> => {
   const { userId } = __params__;
 
@@ -38,8 +44,9 @@ export const sendVKStats = async ({
         scope,
       });
       access_token_for_vkstats = response.access_token;
-    } catch (e: any) {
-      console.error('VKWebAppGetAuthToken', e.error_type);
+    } catch (e: unknown) {
+      const error = e as ErrorData;
+      console.error('VKWebAppGetAuthToken', error.error_type);
     }
   }
 
@@ -60,15 +67,16 @@ export const sendVKStats = async ({
             url: location.href,
             vk_platform: platform,
             event,
-            screen: 'main',
-            json: '',
+            screen,
+            json,
           },
         ],
-        v: '5.124',
+        v: version,
         access_token: access_token_for_vkstats,
       },
     });
-  } catch (e: any) {
-    console.error('error send statEvents.addMiniApps', e.error_type);
+  } catch (e: unknown) {
+    const error = e as ErrorData;
+    console.error('error send statEvents.addMiniApps', error.error_type);
   }
 };

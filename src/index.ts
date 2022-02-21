@@ -9,9 +9,11 @@ import {
   StatsPageType,
   StatsSendPageType,
   StatusEventType,
+  SnitchPageType,
+  VKStatsType,
 } from './types/send';
 import { InitType } from './types/init';
-import { init, __params__ } from './init';
+import { init, __params__, setUserId } from './init';
 import {
   sendEventGA,
   sendEventPageGA,
@@ -26,9 +28,12 @@ import { sendPixel } from './sendPixel';
 import { sendVKStats } from './sendVKEvents';
 import { sendVKRetargetingEvent } from './sendVKRetargetingEvent';
 import { statEvent, statFunc, statSetStatus } from './statsEvent';
+import { sendSnitchEvent, sendSnitchPage } from './sendVKSnitch';
+import useChangePage from './useChangePage';
 
 export {
   init,
+  setUserId,
   sendEventGA,
   sendEventPageGA,
   sendEventMail,
@@ -44,6 +49,9 @@ export {
   statFunc,
   statSetStatus,
   sendVKStats,
+  sendSnitchEvent,
+  sendSnitchPage,
+  useChangePage,
 };
 
 export {
@@ -58,6 +66,8 @@ export {
   StatsPageType,
   StatsSendPageType,
   StatusEventType,
+  SnitchPageType,
+  VKStatsType,
 };
 
 export { __params__ };
